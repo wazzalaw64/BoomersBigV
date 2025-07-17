@@ -1,35 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>My Stream App</title>
-  <style>
-    body { font-family: sans-serif; background: #111; color: #fff; text-align: center; }
-    .video-card { background: #222; margin: 20px auto; padding: 10px; width: 300px; border-radius: 10px; }
-    img { width: 100%; border-radius: 5px; }
-    .label { font-size: 0.9em; color: #ccc; }
-  </style>
-</head>
-<body>
-  <h1>My Sports Streams</h1>
-  <div id="videoList"></div>
-
-  <script>
-    fetch('videos.json')
-      .then(response => response.json())
-      .then(data => {
-        const container = document.getElementById('videoList');
-        data.forEach(video => {
-          const div = document.createElement('div');
-          div.className = 'video-card';
-          div.innerHTML = `
-            <img src="${video.thumbnail}" alt="${video.title}">
-            <h2>${video.title}</h2>
-            <p class="label">${video.status} · ${video.date} · ${video.team}</p>
-          `;
-          container.appendChild(div);
-        });
-      });
-  </script>
-</body>
+  <head>
+    <title>Boomers BigV Test</title>
+  </head>
+  <body>
+    <h1>It works!</h1>
+    <p>This is the homepage.</p>
+  </body>
 </html>
