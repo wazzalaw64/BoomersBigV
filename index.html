@@ -5,41 +5,81 @@
   <title>Boomers BigV Streams</title>
   <style>
     body { font-family: Arial, sans-serif; background: #111; color: #eee; padding: 20px; }
-    .video-card { background: #222; margin: 10px 0; padding: 10px; border-radius: 8px; max-width: 400px; }
-    img { width: 100%; border-radius: 5px; }
-    h2 { margin: 0.2em 0; }
-    .meta { color: #aaa; font-size: 0.9em; }
+    #player {
+      margin-bottom: 20px;
+      width: 100%;
+      max-width: 560px;
+      height: 315px;
+      border: none;
+      border-radius: 8px;
+    }
+    .video-card {
+      background: #222;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      max-width: 400px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .video-card:hover {
+      background-color: #333;
+    }
+    img {
+      width: 100%;
+      border-radius: 5px;
+    }
+    h2 {
+      margin: 0.2em 0;
+    }
+    .meta {
+      color: #aaa;
+      font-size: 0.9em;
+    }
   </style>
 </head>
 <body>
   <h1>Boomers BigV Streams</h1>
+
+  <!-- Video player iframe -->
+  <iframe id="player" src="" allowfullscreen></iframe>
+
+  <!-- Container for video thumbnails -->
   <div id="videoList">Loading videos…</div>
 
   <script>
+    let player = document.getElementById('player');
+    let videoList = document.getElementById('videoList');
+
     fetch('videos.json')
       .then(res => {
         if (!res.ok) throw new Error('Could not load videos.json');
         return res.json();
       })
       .then(videos => {
-        const container = document.getElementById('videoList');
-        container.innerHTML = '';
+        videoList.innerHTML = '';
 
         videos.forEach(video => {
           const div = document.createElement('div');
           div.className = 'video-card';
+
+          // Extract YouTube video ID from the URL
+          // Assuming video.url contains the full YouTube link
+          const videoId = video.url.split('v=')[1] || video.url; 
+          // In case of extra parameters, clean them
+          const cleanVideoId = videoId ? videoId.split('&')[0] : '';
+
           div.innerHTML = `
             <img src="${video.thumbnail}" alt="${video.title}" />
             <h2>${video.title}</h2>
             <div class="meta">${video.status} · ${video.date} · ${video.team}</div>
           `;
-          container.appendChild(div);
+
+          div.addEventListener('click', () => {
+            player.src = `https://www.youtube.com/embed/${cleanVideoId}?autoplay=1`;
+          });
+
+          videoList.appendChild(div);
         });
       })
       .catch(err => {
-        document.getElementById('videoList').textContent = 'Error loading videos.';
-        console.error(err);
-      });
-  </script>
-</body>
-</html>
