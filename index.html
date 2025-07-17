@@ -1,10 +1,45 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Boomers BigV Test</title>
-  </head>
-  <body>
-    <h1>It works!</h1>
-    <p>This is the homepage.</p>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <title>Boomers BigV Streams</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #111; color: #eee; padding: 20px; }
+    .video-card { background: #222; margin: 10px 0; padding: 10px; border-radius: 8px; max-width: 400px; }
+    img { width: 100%; border-radius: 5px; }
+    h2 { margin: 0.2em 0; }
+    .meta { color: #aaa; font-size: 0.9em; }
+  </style>
+</head>
+<body>
+  <h1>Boomers BigV Streams</h1>
+  <div id="videoList">Loading videos…</div>
+
+  <script>
+    fetch('videos.json')
+      .then(res => {
+        if (!res.ok) throw new Error('Could not load videos.json');
+        return res.json();
+      })
+      .then(videos => {
+        const container = document.getElementById('videoList');
+        container.innerHTML = '';
+
+        videos.forEach(video => {
+          const div = document.createElement('div');
+          div.className = 'video-card';
+          div.innerHTML = `
+            <img src="${video.thumbnail}" alt="${video.title}" />
+            <h2>${video.title}</h2>
+            <div class="meta">${video.status} · ${video.date} · ${video.team}</div>
+          `;
+          container.appendChild(div);
+        });
+      })
+      .catch(err => {
+        document.getElementById('videoList').textContent = 'Error loading videos.';
+        console.error(err);
+      });
+  </script>
+</body>
 </html>
